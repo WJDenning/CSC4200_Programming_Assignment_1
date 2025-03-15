@@ -1,4 +1,5 @@
 import socket
+from encryption import encrypt_message, decrypt_message
 
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 5050
@@ -15,7 +16,12 @@ def start_client():
 		message = input("> ")
 		if message.lower() == "exit":
 			break
-		client.send(message.encode("utf-8"))
+		encrypted_message = encrypt_message(message)
+		client.send(encrypted_message)
+
+		encrypted_acknowledgement = client.recv(1024)
+		acknowledgement = decrypt_message(encrypted_acknowledgement)
+		print(f"Server: {acknowledgement}")
 
 	client.close()
 	print("Disconnected from the server.")

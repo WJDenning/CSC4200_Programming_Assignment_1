@@ -1,6 +1,7 @@
 import socket
 import threading
 import logging
+from encryption import encrypt_message, decrypt_message
 
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
@@ -24,11 +25,17 @@ def handle_client(conn, addr):
 
 	connected = True
 	while connected:
-		msg = conn.recv(1024).decode("utf-8")
-		if not msg:
+		encrypted_msg = conn.recv(1024)
+		if not encrypted_msg:
 			break
+
+		msg = decrypt_message(encrypted_msg)
+
 		logging.info(f"Received from {addr}: {msg}")
 		print(f"[{addr}] {msg}")
+
+		acknowledgement = encrypt_message("Message Received")
+		conn.send(acknowledgement)
 
 	conn.close()
 	clients.remove(conn)
