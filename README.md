@@ -14,8 +14,9 @@
 # Setup and Installation
   clone this repository "git clone https://github.com/WJDenning/CSC4200_Programming_Assignment_1.git"
   install with make "make install"
-  run server "make server"
-  run client "make client"
+  run server "make runServer"
+  run client "make runClient"
+  clean "make clean"
 
 # Dependencies
   Socket python library for client server communication
